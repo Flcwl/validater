@@ -1,0 +1,15 @@
+export declare const required: (value: any) => boolean;
+export declare const min: (value: string, minLength: number) => boolean;
+export declare const max: (value: string, maxLength: number) => boolean;
+export declare const len: (value: string, length: number) => boolean;
+export declare const pattern: (value: string, regexp: RegExp) => boolean;
+export declare const nonPattern: (value: string, regexp: RegExp) => boolean;
+export declare const include: (value: any, array: any[]) => boolean;
+export declare const exclude: (value: any, array: any[]) => boolean;
+export declare const equals: (value: any, expect: any) => boolean;
+export declare const unequals: (value: any, expect: any) => boolean;
+export declare const startsWith: (value: string, start: string) => boolean;
+export declare const endsWith: (value: string, end: string) => boolean;
+export declare const type: (value: any, type: string) => boolean;
+export declare const alpha: (value: string) => boolean;
+export declare const numeric: (value: string) => boolean;

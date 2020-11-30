@@ -1,5 +1,6 @@
 declare const _default: {
-    l: <T>(length: number, fill?: T) => T[];
-    z: (str: string | number, length?: number) => string;
+    u: (o: any) => boolean;
+    f: (o: any) => boolean;
+    a: (o: any) => boolean;
 };
 export default _default;

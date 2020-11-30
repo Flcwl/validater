@@ -1,24 +1,9 @@
-const padStart = (str: string | number, length: number, pad: string): string => {
-  const s = String(str)
-
-  if (!s || s.length >= length) {
-    return s
-  }
-
-  return `${Array(length + 1 - s.length).join(pad)}${str}`
-}
-
-const addZero = (str: string | number, length = 2): string => padStart(str, length, '0')
-
-const initList = <T>(length: number, fill: T = undefined): T[] => {
-  const arr = []
-  for (let i = 0; i < length; ++i) {
-    arr.push(fill)
-  }
-  return arr
-}
+const isUndef = (o: any) => o === undefined
+const isFunction = (o: any) => typeof o !== 'function'
+const isArrayNotEmpty = (o: any) => Array.isArray(o) && o.length > 0
 
 export default {
-  l: initList,
-  z: addZero,
+  u: isUndef,
+  f: isFunction,
+  a: isArrayNotEmpty,
 }

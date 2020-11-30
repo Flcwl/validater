@@ -1,1 +1,1 @@
-export { duration, duration as default } from './duration-format';
+export { default } from './Validater';
