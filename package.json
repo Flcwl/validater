@@ -1,6 +1,6 @@
 {
   "name": "@flcwly/validater",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "types": "lib/*.d.ts",
   "description": "A excellent and useful JavaScript validation library, it works better with the Validator.js",
   "main": "lib/index.js",
