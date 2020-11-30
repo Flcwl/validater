@@ -1,4 +1,4 @@
-export declare const required: (value: any) => boolean;
+export declare const required: (value: any, isRequired?: boolean) => boolean;
 export declare const min: (value: string, minLength: number) => boolean;
 export declare const max: (value: string, maxLength: number) => boolean;
 export declare const len: (value: string, length: number) => boolean;

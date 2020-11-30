@@ -41,6 +41,7 @@ declare class Validater {
     defaultMsg: string;
     errorTable: ErrorTable;
     validatorTable: ValidatorTable;
+    ruleSequence: string[];
     /**
      * @param rules validation rules of user
      * @param options validation options of user
@@ -54,15 +55,15 @@ declare class Validater {
      * Register validators generated based on rules
      */
     registerValidator: (rule: ValidaterRule) => void;
-    /**
-     * Extend validation plugin
-     */
-    static extend(ruleName: string, validate: ValidateFunc, message?: string): typeof Validater;
     validate: (value: unknown, ruleName?: string | undefined) => string | void;
     validateOne: (value: unknown) => string | void;
     validateAll: (value: unknown) => Validater;
     formatMessage: (message: string, value: unknown) => string;
     hasError: () => boolean;
     getError: (ruleName?: string | undefined) => any;
+    /**
+     * Extend validation plugin
+     */
+    static extend(ruleName: string, validate: ValidateFunc, message?: string): typeof Validater;
 }
 export default Validater;

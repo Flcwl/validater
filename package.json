@@ -1,5 +1,5 @@
 {
-  "name": "validater",
+  "name": "@flcwly/validater",
   "version": "0.1.0",
   "types": "lib/*.d.ts",
   "description": "A pure JavaScript library that parses duration time length to format display",

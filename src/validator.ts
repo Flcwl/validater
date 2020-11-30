@@ -4,8 +4,8 @@
 // No Assert to type of the following function parameter
 
 // required
-export const required = (value: any) => {
-  return !!value
+export const required = (value: any, isRequired = true) => {
+  return isRequired && !!value
 }
 
 // min

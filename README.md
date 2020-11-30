@@ -1,61 +1,122 @@
-# Duration Pretty
+# Validater
 
-[![Build Status](https://travis-ci.org/Flcwl/duration-pretty.svg?branch=master)](https://travis-ci.org/github/Flcwl/duration-pretty)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Flcwl/duration-pretty/blob/master/LICENSE)
-[![npm version](https://img.shields.io/npm/v/duration-pretty.svg?style=flat)](https://www.npmjs.com/package/duration-pretty)
+[![Build Status](https://travis-ci.org/Flcwl/validater.svg?branch=master)](https://travis-ci.org/github/Flcwl/validater)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Flcwl/validater/blob/master/LICENSE)
+[![npm version](https://img.shields.io/npm/v/validater.svg?style=flat)](https://www.npmjs.com/package/validater)
 
-> The plugin is a pure JavaScript library that parses duration time length to format display.
+> A excellent and useful JavaScript validation library, it works better with the Validator.js.
 
 ## Getting Started
 
 ### Installation
 
 ```console
-npm install --save duration-pretty
+npm install --save @flcwly/validater
 ```
 
 ### Documentation
 
-The `duration(timestamp, type)` get two parameters: timestamp && type.
+You can Using the `Validater` to check any data, like `string` and others.
+
+Firstly, you need extend the Validator plugins as your need.
 
 ```js
-timestamp: number
-type: seconds | milliseconds
+const Validater = require('@flcwly/validater').default
+const requiredPlugin = (value: any, strategy = true) => {
+  return strategy && !!value
+}
+const maxPlugin = (value: string, strategy: number) => {
+  return required(value) && value.length <= strategy
+}
+
+// extend
+Validater.extend('required', requiredPlugin).extend('max', maxPlugin)
 ```
 
-Format duration time using a template string to `format()`.
+Secondly, you can Using the `required` and `max` like the following way.
 
 ```js
-var { duration } = require('duration-pretty')
-
-duration(7380, 'seconds').format('H:mm') // "2:03"
-duration(36610000333, 'milliseconds').format('Y:MM:DD:HH:mm:ss:SSS') // "1:01:28:17:26:40:333"
+const v = new Validater([
+  {
+    name: 'required',
+    strategy: true,
+    message: 'please enter your name.',
+  },
+  {
+    name: 'max',
+    strategy: 11,
+    message: 'Please enter the correct name.',
+  },
+])
+const errorMsg = v.validateOne('abc1234567890') // "Please enter the correct name."
 ```
 
 or using ES6 Module:
 
 ```js
-import { duration } from 'duration-pretty'
-
-duration(7380, 'seconds').format('H:mm') // "2:03"
+import Validater from '@flcwly/validater'
 ```
 
-The template string is parsed for universal token characters, which are replaced with the duration's value for each unit type. The tokens are:
+The Validater constructor accepts two parameters: `new Validater(rules, options)`.
+
+- rules: ValidaterRule[]
+
+A array that type is `ValidaterRule`.
 
 ```js
-years: Y
-months: M | MM
-days: D | DD
-hours: H | HH
-minutes: m | mm
-seconds： s | ss
-milliseconds: SSS
+name: string      // extend ruleName for validation
+strategy: any     // extend strategy for validation
+message?: string  // rule error message
 ```
 
-Escape token characters within the template string using `[]`.
+- options
 
 ```js
-duration(3661, 'seconds').format('H [[H]], m [[m] countdown]') // "1 [Hrs], 1 [mins countdown]"
+type: 'string' | 'boolean' | 'number' // transform type before validating, default is `string`
+trim: boolean // trim(value) before validating when type is string, default is `true`
+defaultMessage: string // default global error message, default is `The value is incorrect`,
+```
+
+If you have not set a specific error message for rule, the error message will using `defaultRuleMessage`.
+
+```js
+const defaultRuleMessage = 'required defaultRuleMessage'
+Validater.extend('required', requiredPlugin).extend('max', maxPlugin, defaultRuleMessage)
+
+const v = new Validater([
+  {
+    name: 'required',
+    strategy: true,
+  },
+])
+const errorMsg = v.validateOne('') // "required defaultRuleMessage"
+```
+
+If you don't set a `defaultRuleMessage` when `extend`, Then will using the `defaultMessage`.
+
+```js
+const v = new Validater([
+  {
+    name: 'required',
+    strategy: true,
+  },
+])
+const errorMsg = v.validateOne('') // "The value is incorrect"
+```
+
+The message string's relationship for overriding is `message > defaultRuleMessage > defaultMessage`.
+
+And the message string is parsed and replaced with the value by \$0.
+
+```js
+const v = new Validater([
+  {
+    name: 'numeric',
+    strategy: true,
+    message: '$0 error',
+  },
+])
+const errorMsg = v.validateOne('1a1') // "1a1 error"
 ```
 
 ## Tests

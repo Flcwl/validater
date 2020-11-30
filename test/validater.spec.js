@@ -1,5 +1,24 @@
-import Validater from '../src'
-import {
+// import Validater from '../src'
+// import {
+//   required,
+//   min,
+//   max,
+//   len,
+//   pattern,
+//   nonPattern,
+//   include,
+//   exclude,
+//   equals,
+//   unequals,
+//   startsWith,
+//   endsWith,
+//   type,
+//   alpha,
+//   numeric,
+// } from '../lib/validator'
+
+const Validater = require('../lib').default
+const {
   required,
   min,
   max,
@@ -15,7 +34,7 @@ import {
   type,
   alpha,
   numeric,
-} from '../lib/validator'
+} = require('../lib/validator')
 
 describe('Test Validater with mock', () => {
   const mockValidateRules = [
@@ -106,10 +125,48 @@ describe('Test Validater with mock', () => {
   })
 
   describe('pass all validators', () => {
-    it('Validate when $0 = 15678682349', () => {
+    it('Validate when $0 = 15678682341', () => {
       const v = new Validater(mockValidateRules)
       const result = v.validateOne(15678682341)
       expect(result).toEqual(undefined)
+    })
+  })
+
+  describe('Test default error message', () => {
+    it('Validate global error message when $0 = ""', () => {
+      const v = new Validater([
+        {
+          name: 'required',
+          strategy: true,
+        },
+      ])
+      const result = v.validateOne('')
+      expect(result).toEqual('The value is incorrect')
+    })
+
+    it('Test default rule error message when $0 = "4"', () => {
+      const defaultRuleMessage = 'include defaultRuleMessage'
+      Validater.extend('customRule', include, defaultRuleMessage)
+
+      const v = new Validater([
+        {
+          name: 'customRule',
+          strategy: [1, 2, 3, 5],
+        },
+      ])
+      const result = v.validateOne(4)
+      expect(result).toEqual(defaultRuleMessage)
+    })
+
+    it('Test error message with $0 when $0 = "1a1"', () => {
+      const v = new Validater([
+        {
+          name: 'numeric',
+          message: '$0 error',
+        },
+      ])
+      const result = v.validateOne('1a1')
+      expect(result).toEqual('1a1 error')
     })
   })
 })

@@ -61,7 +61,7 @@ const REGEX_FORMAT = /\/[^\/]|\$(0)/g
 const defaultOptions = {
   trim: true,
   type: ValidaterType.string,
-  defaultMessage: 'The value is incorrect.',
+  defaultMessage: 'The value is incorrect',
 }
 
 /**
