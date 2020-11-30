@@ -61,6 +61,8 @@ or using ES6 Module:
 import Validater from '@flcwly/validater'
 ```
 
+### constructor
+
 The Validater constructor accepts two parameters: `new Validater(rules, options)`.
 
 - `rules: ValidaterRule[]`
@@ -129,7 +131,7 @@ const errorMsg = v.validateOne('1a1') // "1a1 error"
 
 ---
 
-## Instance Functions
+### Instance Functions
 
 - `addRules: (rules?: ValidaterRule[] | undefined) => void;`
 
