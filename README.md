@@ -61,7 +61,7 @@ or using ES6 Module:
 import Validater from '@flcwly/validater'
 ```
 
-### constructor
+### Constructor
 
 The Validater constructor accepts two parameters: `new Validater(rules, options)`.
 
@@ -159,7 +159,7 @@ Get error to special ruleName, return all error as object when `ruleName === und
 
 ---
 
-## with validator.js
+## With validator.js
 
 It works better with the [Validator.js](https://github.com/validatorjs/validator.js).
 
@@ -178,6 +178,77 @@ const errorMsg = v.validateOne('@mail.com') // ""@mail.com" error"
 ```
 
 ---
+
+## With React Hooks
+
+You can use `Validater` with React hooks like the following usage.
+
+```jsx
+import { useState, useCallback } from 'react'
+import Validater from '@flcwly/validater'
+
+const requiredPlugin = (value: any, strategy = true) => {
+  return strategy && !!value
+}
+const patternPlugin = (value: string, strategy: number) => {
+  return requiredPlugin(value) && strategy.test(value)
+}
+
+Validater.extend('required', requiredPlugin).extend('pattern', patternPlugin)
+
+export const useValidater = (initialValue, rules) => {
+  const [value, setValue] = useState(initialValue)
+  const [error, setError] = useState()
+  const [verified, setVerified] = useState(!rules)
+  const validater = useMemo(() => new Validater(rules), [rules])
+
+  const verify = useCallback(
+    (val = value) => {
+      const errorMsg = validater.validateOne(val)
+      setVerified(true)
+      setError(errorMsg)
+      return errorMsg
+    },
+    [value, rules, setError, setVerified, validater]
+  )
+
+  return [value, setValue, error, verify, verified]
+}
+
+function InputTestComponent() {
+  const [phone, setPhone, phoneError, verifyPhone, hasVerifiedPhone] = useValidater('', [
+    {
+      name: 'required',
+      strategy: true,
+      message: 'Please enter the phone number',
+    },
+    {
+      name: 'pattern',
+      strategy: /^[\d]{11}$/,
+      message: 'Please enter the correct phone number',
+    },
+  ])
+  const btnDisabled = useMemo(() => {
+    return !!phoneError || !!hasVerifiedPhone
+  }, [phoneError, hasVerifiedPhone])
+  const handleSubmit = useCallback(async () => {
+    const phoneErrorMsg = phoneError || verifyPhone()
+    if (phoneErrorMsg) {
+      // deal with error here...
+    }
+    // request to submit
+  }, [phone, phoneError, verifyPhone])
+
+  return (
+    <div>
+      phone number: <input value={phone} />
+      <button btnDisabled={btnDisabled} onClick={handleSubmit}>
+        Submit
+      </button>
+    </div>
+  )
+}
+```
 
 ## Tests
 
