@@ -1,8 +1,8 @@
 {
   "name": "@flcwly/validater",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "types": "lib/*.d.ts",
-  "description": "A pure JavaScript library that parses duration time length to format display",
+  "description": "A excellent and useful JavaScript validation library, it works better with the Validator.js",
   "main": "lib/index.js",
   "scripts": {
     "test": "jest --config jest.config.json",
@@ -14,18 +14,18 @@
   },
   "author": "Flcwl",
   "keywords": [
-    "time",
-    "duration",
-    "format"
+    "validator",
+    "validater",
+    "validation"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/Flcwl/duration-pretty",
+  "homepage": "https://github.com/Flcwl/validater",
   "bugs": {
-    "url": "https://github.com/Flcwl/duration-pretty/issues"
+    "url": "https://github.com/Flcwl/validater/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Flcwl/duration-pretty.git"
+    "url": "git+https://github.com/Flcwl/validater.git"
   },
   "devDependencies": {
     "@types/jest": "^24.0.15",

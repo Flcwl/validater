@@ -1,24 +1,5 @@
-// import Validater from '../src'
-// import {
-//   required,
-//   min,
-//   max,
-//   len,
-//   pattern,
-//   nonPattern,
-//   include,
-//   exclude,
-//   equals,
-//   unequals,
-//   startsWith,
-//   endsWith,
-//   type,
-//   alpha,
-//   numeric,
-// } from '../lib/validator'
-
-const Validater = require('../lib').default
-const {
+import Validater from '../src'
+import {
   required,
   min,
   max,
@@ -34,7 +15,26 @@ const {
   type,
   alpha,
   numeric,
-} = require('../lib/validator')
+} from '../lib/validator'
+
+// const Validater = require('../lib').default
+// const {
+//   required,
+//   min,
+//   max,
+//   len,
+//   pattern,
+//   nonPattern,
+//   include,
+//   exclude,
+//   equals,
+//   unequals,
+//   startsWith,
+//   endsWith,
+//   type,
+//   alpha,
+//   numeric,
+// } = require('../lib/validator')
 
 describe('Test Validater with mock', () => {
   const mockValidateRules = [

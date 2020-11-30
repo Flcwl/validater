@@ -2,9 +2,11 @@
 
 [![Build Status](https://travis-ci.org/Flcwl/validater.svg?branch=master)](https://travis-ci.org/github/Flcwl/validater)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Flcwl/validater/blob/master/LICENSE)
-[![npm version](https://img.shields.io/npm/v/validater.svg?style=flat)](https://www.npmjs.com/package/validater)
+[![npm version](https://img.shields.io/npm/v/@flcwly/validater.svg?style=flat)](https://www.npmjs.com/package/validater)
 
 > A excellent and useful JavaScript validation library, it works better with the Validator.js.
+
+---
 
 ## Getting Started
 
@@ -51,6 +53,8 @@ const v = new Validater([
 const errorMsg = v.validateOne('abc1234567890') // "Please enter the correct name."
 ```
 
+You can define the order of validators by array.
+
 or using ES6 Module:
 
 ```js
@@ -59,7 +63,7 @@ import Validater from '@flcwly/validater'
 
 The Validater constructor accepts two parameters: `new Validater(rules, options)`.
 
-- rules: ValidaterRule[]
+- `rules: ValidaterRule[]`
 
 A array that type is `ValidaterRule`.
 
@@ -69,7 +73,7 @@ strategy: any     // extend strategy for validation
 message?: string  // rule error message
 ```
 
-- options
+- `options`
 
 ```js
 type: 'string' | 'boolean' | 'number' // transform type before validating, default is `string`
@@ -104,7 +108,11 @@ const v = new Validater([
 const errorMsg = v.validateOne('') // "The value is incorrect"
 ```
 
-The message string's relationship for overriding is `message > defaultRuleMessage > defaultMessage`.
+The message string's relationship for overriding is:
+
+```console
+message > defaultRuleMessage > defaultMessage
+```
 
 And the message string is parsed and replaced with the value by \$0.
 
@@ -118,6 +126,56 @@ const v = new Validater([
 ])
 const errorMsg = v.validateOne('1a1') // "1a1 error"
 ```
+
+---
+
+## Instance Functions
+
+- `addRules: (rules?: ValidaterRule[] | undefined) => void;`
+
+Traverse rules to register validators generated based on rules.
+
+- `validate: (value: unknown, ruleName?: string | undefined) => string | void;`
+
+Validate a value with special ruleName.
+
+- `validateOne: (value: unknown) => string | void;`
+
+Validate a value base on array order starts at 0.
+
+- `validateAll: (value: unknown) => this;`
+
+Validate a value for all rules, then will return `this`.
+
+- `hasError: () => boolean;`
+
+Check if the error exists, return `true` when error.
+
+- `getError: (ruleName?: string | undefined) => any;`
+
+Get error to special ruleName, return all error as object when `ruleName === undefined`.
+
+---
+
+## with validator.js
+
+It works better with the [Validator.js](https://github.com/validatorjs/validator.js).
+
+```js
+import Validator from 'validator'
+
+Validater.extend('isEmail', Validator.isEmail)
+
+const v = new Validater([
+  {
+    name: 'isEmail',
+    message: '"$0" error',
+  },
+])
+const errorMsg = v.validateOne('@mail.com') // ""@mail.com" error"
+```
+
+---
 
 ## Tests
 
