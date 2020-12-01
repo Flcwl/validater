@@ -181,22 +181,23 @@ const errorMsg = v.validateOne('@mail.com') // ""@mail.com" error"
 
 ## With React Hooks
 
-You can use `Validater` with React hooks like the following usage.
+You can use `Validater` with React hooks like the following usage. Here is a [CodeSandbox Demo](https://codesandbox.io/s/flcwlyvalidater-demo-g0822?file=/src/App.tsx).
 
-```jsx
-import { useState, useCallback } from 'react'
+```tsx
+import React, { useState, useCallback, useMemo } from 'react'
 import Validater from '@flcwly/validater'
+import Validator from 'validator'
 
 const requiredPlugin = (value: any, strategy = true) => {
-  return strategy && !!value
+  return strategy && !Validator.isEmpty(value)
 }
-const patternPlugin = (value: string, strategy: number) => {
+const patternPlugin = (value: string, strategy: RegExp) => {
   return requiredPlugin(value) && strategy.test(value)
 }
 
 Validater.extend('required', requiredPlugin).extend('pattern', patternPlugin)
 
-export const useValidater = (initialValue, rules) => {
+export const useValidater = (initialValue: any, rules: any[]) => {
   const [value, setValue] = useState(initialValue)
   const [error, setError] = useState()
   const [verified, setVerified] = useState(!rules)
@@ -209,13 +210,13 @@ export const useValidater = (initialValue, rules) => {
       setError(errorMsg)
       return errorMsg
     },
-    [value, rules, setError, setVerified, validater]
+    [value, setError, setVerified, validater]
   )
 
   return [value, setValue, error, verify, verified]
 }
 
-function InputTestComponent() {
+export function InputTestComponent() {
   const [phone, setPhone, phoneError, verifyPhone, hasVerifiedPhone] = useValidater('', [
     {
       name: 'required',
@@ -229,7 +230,7 @@ function InputTestComponent() {
     },
   ])
   const btnDisabled = useMemo(() => {
-    return !!phoneError || !!hasVerifiedPhone
+    return !!phoneError || !hasVerifiedPhone
   }, [phoneError, hasVerifiedPhone])
   const handleSubmit = useCallback(async () => {
     const phoneErrorMsg = phoneError || verifyPhone()
@@ -237,12 +238,27 @@ function InputTestComponent() {
       // deal with error here...
     }
     // request to submit
-  }, [phone, phoneError, verifyPhone])
+  }, [phoneError, verifyPhone])
 
   return (
     <div>
-      phone number: <input value={phone} />
-      <button btnDisabled={btnDisabled} onClick={handleSubmit}>
+      <div>
+        Phone number:
+        <input
+          value={phone}
+          onChange={(e) => {
+            const val = e.target.value
+            setPhone(val)
+            verifyPhone(val)
+          }}
+          onBlur={() => verifyPhone()}
+        />
+      </div>
+      <div>
+        Error:
+        <span>{hasVerifiedPhone ? phoneError || 'No Error.' : 'Initial Status.'}</span>
+      </div>
+      <button disabled={btnDisabled} onClick={handleSubmit}>
         Submit
       </button>
     </div>

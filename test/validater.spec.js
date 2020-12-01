@@ -1,4 +1,4 @@
-import Validater from '../src'
+import Validater from '../lib'
 import {
   required,
   min,
@@ -167,6 +167,20 @@ describe('Test Validater with mock', () => {
       ])
       const result = v.validateOne('1a1')
       expect(result).toEqual('1a1 error')
+    })
+  })
+
+  describe('Test extend in Instance Function', () => {
+    it('Validate override extend function when $0 = ""', () => {
+      const v = new Validater([
+        {
+          name: 'privateRequired',
+          strategy: (value) => required(value, true),
+          message: 'private required error',
+        },
+      ])
+      const result = v.validateOne('')
+      expect(result).toEqual('private required error')
     })
   })
 })

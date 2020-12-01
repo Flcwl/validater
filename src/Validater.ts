@@ -1,17 +1,21 @@
 import Utils from './utils'
 
-interface StrategyPlugin {
-  string?: ValidaterStrategy
+export interface StrategyPlugin {
+  [key: string]: ValidaterStrategy
 }
 
-interface ValidateFunc {
-  (value: any, strategy: any): boolean
-}
-
-interface ValidaterRule {
+export interface ValidaterRule {
   name: string
   strategy: any
   message?: string
+}
+
+interface ValidateFunc {
+  (value: unknown, strategy: any): boolean
+}
+
+interface Validator {
+  (value: unknown): string | undefined
 }
 
 interface ValidaterStrategy {
@@ -20,7 +24,7 @@ interface ValidaterStrategy {
 }
 
 interface ValidatorTable {
-  string?: ValidateFunc
+  [key: string]: Validator
 }
 
 interface ErrorTable {
@@ -118,11 +122,23 @@ class Validater {
   registerValidator = (rule: ValidaterRule) => {
     const { name, strategy, message } = rule
     const { defaultMsg, formatMessage, convert } = this
-    const { validate, message: defaultRuleMsg } = Validater.strategyTable[name]
+    const validater = Validater.strategyTable[name]
+    let validator: Validator
 
-    const validator = (value: unknown) => {
-      if (validate(convert(value), strategy) === false) {
-        return formatMessage(message || defaultRuleMsg || defaultMsg, value)
+    if (Utils.u(validater)) {
+      const error = message || defaultMsg
+      validator = (value: unknown) => {
+        if (strategy(convert(value)) === false) {
+          return formatMessage(error, value)
+        }
+      }
+    } else {
+      const { validate, message: defaultRuleMsg } = validater
+      const error = message || defaultRuleMsg || defaultMsg
+      validator = (value: unknown) => {
+        if (validate(convert(value), strategy) === false) {
+          return formatMessage(error, value)
+        }
       }
     }
 

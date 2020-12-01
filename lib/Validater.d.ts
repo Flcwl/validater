@@ -1,20 +1,23 @@
-interface StrategyPlugin {
-    string?: ValidaterStrategy;
+export interface StrategyPlugin {
+    [key: string]: ValidaterStrategy;
 }
-interface ValidateFunc {
-    (value: any, strategy: any): boolean;
-}
-interface ValidaterRule {
+export interface ValidaterRule {
     name: string;
     strategy: any;
     message?: string;
+}
+interface ValidateFunc {
+    (value: unknown, strategy: any): boolean;
+}
+interface Validator {
+    (value: unknown): string | undefined;
 }
 interface ValidaterStrategy {
     validate: ValidateFunc;
     message: string;
 }
 interface ValidatorTable {
-    string?: ValidateFunc;
+    [key: string]: Validator;
 }
 interface ErrorTable {
     string?: string;
