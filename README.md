@@ -4,7 +4,7 @@
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Flcwl/validater/blob/master/LICENSE)
 [![npm version](https://img.shields.io/npm/v/@flcwly/validater.svg?style=flat)](https://www.npmjs.com/package/@flcwly/validater)
 
-> A excellent and useful JavaScript validation library, it works better with the Validator.js.
+> An excellent and useful JavaScript validation library, it works better with the Validator.js.
 
 ---
 
